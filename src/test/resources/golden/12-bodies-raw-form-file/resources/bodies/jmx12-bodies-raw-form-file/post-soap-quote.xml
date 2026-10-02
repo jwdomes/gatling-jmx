@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <GetQuote xmlns="urn:bodies-fixture">
+      <Symbol>#{symbol}</Symbol>
+      <Account>bodies-account-991</Account>
+      <Note>long enough to go to a file</Note>
+    </GetQuote>
+  </soap:Body>
+</soap:Envelope>

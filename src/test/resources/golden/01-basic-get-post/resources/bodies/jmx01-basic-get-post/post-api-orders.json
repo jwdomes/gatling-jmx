@@ -1,0 +1,11 @@
+{
+  "customer": {
+    "id": "CUST-BASIC-77",
+    "email": "orders-basic@example-basic.test"
+  },
+  "items": [
+    {"sku": "SKU-BASIC-1001", "qty": 1, "price": 1299.00},
+    {"sku": "SKU-BASIC-2002", "qty": 2, "price": 19.99}
+  ],
+  "shipping": {"method": "express", "searchedFor": "#{search_term}"}
+}

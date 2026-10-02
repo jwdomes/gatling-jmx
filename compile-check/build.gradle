@@ -1,0 +1,40 @@
+// Compiles every golden simulation against the Gatling Java DSL.
+// GoldenTest proves the converter's output equals the goldens, so this proves the output compiles.
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+def gatlingVersion = '3.16.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+dependencies {
+    implementation "io.gatling:gatling-core-java:${gatlingVersion}"
+    implementation "io.gatling:gatling-http-java:${gatlingVersion}"
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ["${rootDir}/src/test/resources/golden"]
+            include '**/java/**/*.java'
+        }
+        resources {
+            srcDirs = []
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 17
+    options.encoding = 'UTF-8'
+    options.compilerArgs += ['-Xlint:-options']
+}

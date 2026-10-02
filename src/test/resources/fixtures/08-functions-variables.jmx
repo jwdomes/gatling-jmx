@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Functions and Variables">
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="base_path" elementType="Argument">
+            <stringProp name="Argument.name">base_path</stringProp>
+            <stringProp name="Argument.value">/api</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="host" elementType="Argument">
+            <stringProp name="Argument.name">host</stringProp>
+            <stringProp name="Argument.value">fn.example-functions.test</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="api.key" elementType="Argument">
+            <stringProp name="Argument.name">api.key</stringProp>
+            <stringProp name="Argument.value">key-value-functions</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="greeting" elementType="Argument">
+            <stringProp name="Argument.name">greeting</stringProp>
+            <stringProp name="Argument.value">${__P(greeting,hello)} from ${host}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="startedAt" elementType="Argument">
+            <stringProp name="Argument.name">startedAt</stringProp>
+            <stringProp name="Argument.value">${__time()}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </elementProp>
+    </TestPlan>
+    <hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Function Users">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">2</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">2</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">2</stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager">
+          <collectionProp name="CookieManager.cookies"/>
+        </CookieManager>
+        <hashTree/>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="More Variables">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="channel" elementType="Argument">
+              <stringProp name="Argument.name">channel</stringProp>
+              <stringProp name="Argument.value">web-functions</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET ids">
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">${base_path}/ids</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="uuid" elementType="HTTPArgument">
+                <stringProp name="Argument.name">uuid</stringProp>
+                <stringProp name="Argument.value">${__UUID()}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="uuidNoParens" elementType="HTTPArgument">
+                <stringProp name="Argument.name">uuidNoParens</stringProp>
+                <stringProp name="Argument.value">${__UUID}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="thread" elementType="HTTPArgument">
+                <stringProp name="Argument.name">thread</stringProp>
+                <stringProp name="Argument.value">${__threadNum}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="key" elementType="HTTPArgument">
+                <stringProp name="Argument.name">key</stringProp>
+                <stringProp name="Argument.value">${api.key}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="greeting" elementType="HTTPArgument">
+                <stringProp name="Argument.name">greeting</stringProp>
+                <stringProp name="Argument.value">${greeting}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Correlation Header">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">X-Correlation-Id</stringProp>
+                <stringProp name="Header.value">${__UUID()}</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">X-Channel</stringProp>
+                <stringProp name="Header.value">${channel}</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET time">
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">/time</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="millis" elementType="HTTPArgument">
+                <stringProp name="Argument.name">millis</stringProp>
+                <stringProp name="Argument.value">${__time()}</stringProp>
+              </elementProp>
+              <elementProp name="iso" elementType="HTTPArgument">
+                <stringProp name="Argument.name">iso</stringProp>
+                <stringProp name="Argument.value">${__time(yyyy-MM-dd'T'HH:mm:ss.SSS)}</stringProp>
+              </elementProp>
+              <elementProp name="week" elementType="HTTPArgument">
+                <stringProp name="Argument.name">week</stringProp>
+                <stringProp name="Argument.value">${__time(YYYY-'W'ww)}</stringProp>
+              </elementProp>
+              <elementProp name="seconds" elementType="HTTPArgument">
+                <stringProp name="Argument.name">seconds</stringProp>
+                <stringProp name="Argument.value">${__time(/1000,)}</stringProp>
+              </elementProp>
+              <elementProp name="today" elementType="HTTPArgument">
+                <stringProp name="Argument.name">today</stringProp>
+                <stringProp name="Argument.value">${__time(YMD,todayVar)}</stringProp>
+              </elementProp>
+              <elementProp name="longDate" elementType="HTTPArgument">
+                <stringProp name="Argument.name">longDate</stringProp>
+                <stringProp name="Argument.value">${__time(EEE\, d MMM yyyy)}</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET random">
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">/random/${__Random(1,10)}</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="stored" elementType="HTTPArgument">
+                <stringProp name="Argument.name">stored</stringProp>
+                <stringProp name="Argument.value">${__Random(100,999,lastRandom)}</stringProp>
+              </elementProp>
+              <elementProp name="big" elementType="HTTPArgument">
+                <stringProp name="Argument.name">big</stringProp>
+                <stringProp name="Argument.value">${__Random(1,9999999999)}</stringProp>
+              </elementProp>
+              <elementProp name="token" elementType="HTTPArgument">
+                <stringProp name="Argument.name">token</stringProp>
+                <stringProp name="Argument.value">${__RandomString(8,abcdef0123)}</stringProp>
+              </elementProp>
+              <elementProp name="anyChars" elementType="HTTPArgument">
+                <stringProp name="Argument.name">anyChars</stringProp>
+                <stringProp name="Argument.value">${__RandomString(12)}</stringProp>
+              </elementProp>
+              <elementProp name="dynamicLength" elementType="HTTPArgument">
+                <stringProp name="Argument.name">dynamicLength</stringProp>
+                <stringProp name="Argument.value">${__RandomString(${len},abc)}</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET counters">
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">/counters</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="mine" elementType="HTTPArgument">
+                <stringProp name="Argument.name">mine</stringProp>
+                <stringProp name="Argument.value">${__counter(TRUE,)}</stringProp>
+              </elementProp>
+              <elementProp name="global" elementType="HTTPArgument">
+                <stringProp name="Argument.name">global</stringProp>
+                <stringProp name="Argument.value">${__counter(FALSE,globalCount)}</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET properties">
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">/${__P(apiVersion,v1)}/items</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="region" elementType="HTTPArgument">
+                <stringProp name="Argument.name">region</stringProp>
+                <stringProp name="Argument.value">${__property(region,,eu-west-functions)}</stringProp>
+              </elementProp>
+              <elementProp name="defaultOne" elementType="HTTPArgument">
+                <stringProp name="Argument.name">defaultOne</stringProp>
+                <stringProp name="Argument.value">${__P(pageSize)}</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET unsupported functions">
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">/unsupported</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="year" elementType="HTTPArgument">
+                <stringProp name="Argument.name">year</stringProp>
+                <stringProp name="Argument.value">${__groovy(new Date().format('yyyy'),)}</stringProp>
+              </elementProp>
+              <elementProp name="encoded" elementType="HTTPArgument">
+                <stringProp name="Argument.name">encoded</stringProp>
+                <stringProp name="Argument.value">${__urlencode(fn value with spaces)}</stringProp>
+              </elementProp>
+              <elementProp name="loopIndex" elementType="HTTPArgument">
+                <stringProp name="Argument.name">loopIndex</stringProp>
+                <stringProp name="Argument.value">${__jm__Function Users__idx}</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST literal markers">
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">/literal</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&quot;template&quot;: &quot;#{notGatlingEl}&quot;, &quot;price&quot;: &quot;\${notAJmeterVar}&quot;, &quot;key&quot;: &quot;${api.key}&quot;, &quot;path&quot;: &quot;C:\\temp\\x&quot;}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

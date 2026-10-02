@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Unsupported Elements">
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+    </TestPlan>
+    <hashTree>
+      <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults">
+        <stringProp name="HTTPSampler.domain">app.example-unsupported.test</stringProp>
+        <stringProp name="HTTPSampler.protocol">https</stringProp>
+      </ConfigTestElement>
+      <hashTree/>
+      <KeystoreConfig guiclass="TestBeanGUI" testclass="KeystoreConfig" testname="Client Certificates">
+        <stringProp name="clientCertAliasVarName">certAlias</stringProp>
+        <stringProp name="startIndex">0</stringProp>
+        <stringProp name="endIndex">0</stringProp>
+        <boolProp name="preload">true</boolProp>
+      </KeystoreConfig>
+      <hashTree/>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Unsupported Things">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">0</stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Groovy Setup Script">
+          <stringProp name="scriptLanguage">groovy</stringProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="cacheKey">true</stringProp>
+          <stringProp name="script">import groovy.json.JsonSlurper
+/* a block comment that ends here */ def x = &quot;\u0041 is A&quot;
+def unicodeLooking = &quot;\\u0022 should stay text&quot;
+vars.put(&quot;fromScript&quot;, new JsonSlurper().parseText(prev?.getResponseDataAsString() ?: &quot;{}&quot;).id ?: &quot;unsupported-script-value&quot;)</stringProp>
+        </JSR223Sampler>
+        <hashTree>
+          <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Before Script">
+            <stringProp name="ConstantTimer.delay">250</stringProp>
+          </ConstantTimer>
+          <hashTree></hashTree>
+</hashTree>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="BeanShell Sampler">
+          <stringProp name="BeanShellSampler.query">return &quot;unsupported-beanshell-result&quot;;</stringProp>
+          <stringProp name="BeanShellSampler.filename"></stringProp>
+          <stringProp name="BeanShellSampler.parameters"></stringProp>
+          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+        </BeanShellSampler>
+        <hashTree></hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Query Orders DB">
+          <stringProp name="dataSource">ordersPool</stringProp>
+          <stringProp name="query">SELECT * FROM orders WHERE secret_column = 'unsupported-sql'</stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+        </JDBCSampler>
+        <hashTree></hashTree>
+        <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="Raw TCP Ping">
+          <stringProp name="TCPSampler.server">tcp.example-unsupported.test</stringProp>
+          <stringProp name="TCPSampler.port">9000</stringProp>
+          <stringProp name="TCPSampler.request">PING-unsupported</stringProp>
+        </TCPSampler>
+        <hashTree></hashTree>
+        <PublisherSampler guiclass="JMSPublisherGui" testclass="PublisherSampler" testname="Publish To Queue">
+          <stringProp name="jms.text_message">unsupported-jms-payload</stringProp>
+        </PublisherSampler>
+        <hashTree></hashTree>
+        <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler">
+          <boolProp name="displayJMeterProperties">false</boolProp>
+          <boolProp name="displayJMeterVariables">true</boolProp>
+        </DebugSampler>
+        <hashTree></hashTree>
+        <TestAction guiclass="TestActionGui" testclass="TestAction" testname="Pause 1s (Flow Control)">
+          <intProp name="ActionProcessor.action">1</intProp>
+          <intProp name="ActionProcessor.target">0</intProp>
+          <stringProp name="ActionProcessor.duration">1000</stringProp>
+        </TestAction>
+        <hashTree></hashTree>
+        <com.example.jmeter.FancySampler guiclass="com.example.jmeter.FancySamplerGui" testclass="com.example.jmeter.FancySampler" testname="Plugin Sampler">
+          <stringProp name="fancy.payload">unsupported-plugin-payload</stringProp>
+        </com.example.jmeter.FancySampler>
+        <hashTree></hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /target-of-unsupported">
+          <stringProp name="HTTPSampler.path">/target</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="Legacy Signer">
+            <stringProp name="script">vars.put(&quot;sig&quot;, &quot;unsupported-bsh-signature&quot;);</stringProp>
+            <stringProp name="filename"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+          </BeanShellPreProcessor>
+          <hashTree></hashTree>
+          <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="Per User Params">
+            <collectionProp name="UserParameters.names"/>
+          </UserParameters>
+          <hashTree></hashTree>
+          <ConstantThroughputTimer guiclass="TestBeanGUI" testclass="ConstantThroughputTimer" testname="Ten Per Minute">
+            <intProp name="calcMode">1</intProp>
+            <doubleProp>
+              <name>throughput</name>
+              <value>10.0</value>
+              <savedValue>0.0</savedValue>
+            </doubleProp>
+          </ConstantThroughputTimer>
+          <hashTree></hashTree>
+          <PoissonRandomTimer guiclass="PoissonRandomTimerGui" testclass="PoissonRandomTimer" testname="Poisson Pause">
+            <stringProp name="ConstantTimer.delay">300</stringProp>
+            <stringProp name="RandomTimer.range">100</stringProp>
+          </PoissonRandomTimer>
+          <hashTree></hashTree>
+</hashTree>
+        <AuthManager guiclass="AuthPanel" testclass="AuthManager" testname="Basic Auth">
+          <collectionProp name="AuthManager.auth_list">
+            <elementProp name="" elementType="Authorization">
+              <stringProp name="Authorization.url">https://unsupported.example-unsupported.test</stringProp>
+              <stringProp name="Authorization.username">unsupported-user</stringProp>
+              <stringProp name="Authorization.password">unsupported-password</stringProp>
+            </elementProp>
+          </collectionProp>
+        </AuthManager>
+        <hashTree></hashTree>
+        <DNSCacheManager guiclass="DNSCachePanel" testclass="DNSCacheManager" testname="DNS Cache">
+          <boolProp name="DNSCacheManager.clearEachIteration">false</boolProp>
+          <boolProp name="DNSCacheManager.isCustomResolver">false</boolProp>
+        </DNSCacheManager>
+        <hashTree></hashTree>
+        <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Order Counter">
+          <stringProp name="CounterConfig.start">1</stringProp>
+          <stringProp name="CounterConfig.end"></stringProp>
+          <stringProp name="CounterConfig.incr">1</stringProp>
+          <stringProp name="CounterConfig.name">orderSeq</stringProp>
+        </CounterConfig>
+        <hashTree></hashTree>
+        <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="Random Amount">
+          <stringProp name="maximumValue">100</stringProp>
+          <stringProp name="minimumValue">1</stringProp>
+          <stringProp name="variableName">amount</stringProp>
+        </RandomVariableConfig>
+        <hashTree></hashTree>
+        <InterleaveControl guiclass="InterleaveControlGui" testclass="InterleaveControl" testname="Interleave">
+          <intProp name="InterleaveControl.style">1</intProp>
+        </InterleaveControl>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /interleave/a">
+            <stringProp name="HTTPSampler.path">/interleave/a</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          </HTTPSamplerProxy>
+          <hashTree></hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /interleave/b">
+            <stringProp name="HTTPSampler.path">/interleave/b</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          </HTTPSamplerProxy>
+          <hashTree></hashTree>
+</hashTree>
+        <RunTime guiclass="RunTimeGui" testclass="RunTime" testname="Run For 30s">
+          <stringProp name="RunTime.seconds">30</stringProp>
+        </RunTime>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /runtime">
+            <stringProp name="HTTPSampler.path">/runtime</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          </HTTPSamplerProxy>
+          <hashTree></hashTree>
+</hashTree>
+        <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="Include Shared Login">
+          <stringProp name="IncludeController.includepath">fragments/shared-login.jmx</stringProp>
+        </IncludeController>
+        <hashTree></hashTree>
+        <CriticalSectionController guiclass="CriticalSectionControllerGui" testclass="CriticalSectionController" testname="One At A Time">
+          <stringProp name="CriticalSectionController.lockName">global_lock</stringProp>
+        </CriticalSectionController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /critical">
+            <stringProp name="HTTPSampler.path">/critical</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          </HTTPSamplerProxy>
+          <hashTree></hashTree>
+</hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Weird | name &lt;b&gt;bold&lt;/b&gt; é */ end">
+          <stringProp name="HTTPSampler.path">/weird</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+        </HTTPSamplerProxy>
+        <hashTree></hashTree>
+        <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate">
+          <stringProp name="filename">/var/results/unsupported-aggregate.jtl</stringProp>
+        </ResultCollector>
+        <hashTree></hashTree>
+        <kg.apc.jmeter.vizualizers.CorrectedResultCollector guiclass="kg.apc.jmeter.vizualizers.ResponseTimesOverTimeGui" testclass="kg.apc.jmeter.vizualizers.CorrectedResultCollector" testname="jp@gc - Response Times Over Time">
+          <stringProp name="filename"></stringProp>
+        </kg.apc.jmeter.vizualizers.CorrectedResultCollector>
+        <hashTree></hashTree>
+        <BackendListener guiclass="BackendListenerGui" testclass="BackendListener" testname="InfluxDB">
+          <stringProp name="classname">org.apache.jmeter.visualizers.backend.influxdb.InfluxdbBackendListenerClient</stringProp>
+        </BackendListener>
+        <hashTree></hashTree>
+        <JSR223Listener guiclass="TestBeanGUI" testclass="JSR223Listener" testname="Log Failures">
+          <stringProp name="scriptLanguage">groovy</stringProp>
+          <stringProp name="script">log.info(&quot;unsupported-listener-script&quot;)</stringProp>
+        </JSR223Listener>
+        <hashTree></hashTree>
+      </hashTree>
+      <kg.apc.jmeter.threads.UltimateThreadGroup guiclass="kg.apc.jmeter.threads.UltimateThreadGroupGui" testclass="kg.apc.jmeter.threads.UltimateThreadGroup" testname="Ultimate Thread Group">
+        <collectionProp name="ultimatethreadgroupdata">
+          <collectionProp name="1400000001">
+            <stringProp name="1567">10</stringProp>
+            <stringProp name="48">0</stringProp>
+            <stringProp name="1722">30</stringProp>
+            <stringProp name="1567">60</stringProp>
+            <stringProp name="1567">10</stringProp>
+          </collectionProp>
+        </collectionProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <intProp name="LoopController.loops">-1</intProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+      </kg.apc.jmeter.threads.UltimateThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /ultimate">
+          <stringProp name="HTTPSampler.path">/ultimate</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+        </HTTPSamplerProxy>
+        <hashTree></hashTree>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

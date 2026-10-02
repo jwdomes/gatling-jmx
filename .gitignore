@@ -1,0 +1,4 @@
+build/
+compile-check/build/
+.gradle/
+*.class

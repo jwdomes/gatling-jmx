@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+<hashTree>
+<TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Review Regressions"/>
+<hashTree>
+<ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="Defaults"><stringProp name="HTTPSampler.domain">edge.example-regressions.test</stringProp><stringProp name="HTTPSampler.protocol">https</stringProp></ConfigTestElement>
+<hashTree/>
+<CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="Cookies"><boolProp name="CookieManager.clearEachIteration">true</boolProp></CookieManager>
+<hashTree/>
+<ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="HTTP"><stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+<elementProp name="ThreadGroup.main_controller" elementType="LoopController" testclass="LoopController"><stringProp name="LoopController.loops">3</stringProp></elementProp>
+<stringProp name="ThreadGroup.num_threads">1</stringProp><stringProp name="ThreadGroup.ramp_time">0</stringProp><boolProp name="ThreadGroup.scheduler">false</boolProp><stringProp name="ThreadGroup.duration"></stringProp></ThreadGroup>
+<hashTree>
+<CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Credentials"><stringProp name="filename">creds.csv</stringProp><stringProp name="variableNames">username,password</stringProp><stringProp name="delimiter">,</stringProp><boolProp name="ignoreFirstLine">true</boolProp></CSVDataSet>
+<hashTree/>
+<OnceOnlyController guiclass="x" testclass="OnceOnlyController" testname="Login"></OnceOnlyController>
+<hashTree>
+<HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST /login"><stringProp name="HTTPSampler.path">/login</stringProp><stringProp name="HTTPSampler.method">POST</stringProp><boolProp name="HTTPSampler.follow_redirects">true</boolProp><elementProp name="HTTPsampler.Arguments" elementType="Arguments"><collectionProp name="Arguments.arguments"><elementProp name="u" elementType="HTTPArgument"><stringProp name="Argument.name">u</stringProp><stringProp name="Argument.value">${username}</stringProp></elementProp></collectionProp></elementProp></HTTPSamplerProxy>
+<hashTree></hashTree>
+</hashTree>
+<TransactionController guiclass="x" testclass="TransactionController" testname="Http"></TransactionController>
+<hashTree>
+<HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /browse"><stringProp name="HTTPSampler.path">/browse</stringProp><stringProp name="HTTPSampler.method">GET</stringProp><boolProp name="HTTPSampler.follow_redirects">true</boolProp></HTTPSamplerProxy>
+<hashTree></hashTree>
+</hashTree>
+<GenericController guiclass="x" testclass="GenericController" testname="Other"></GenericController>
+<hashTree>
+<HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /other"><stringProp name="HTTPSampler.path">/other</stringProp><stringProp name="HTTPSampler.method">GET</stringProp><boolProp name="HTTPSampler.follow_redirects">true</boolProp></HTTPSamplerProxy>
+<hashTree></hashTree>
+</hashTree>
+</hashTree>
+<ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Loops By Property"><stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+<elementProp name="ThreadGroup.main_controller" elementType="LoopController" testclass="LoopController"><stringProp name="LoopController.loops">${__P(loops,-1)}</stringProp></elementProp>
+<stringProp name="ThreadGroup.num_threads">1</stringProp><stringProp name="ThreadGroup.ramp_time">0</stringProp><boolProp name="ThreadGroup.scheduler">true</boolProp><stringProp name="ThreadGroup.duration">60</stringProp></ThreadGroup>
+<hashTree>
+<LoopController guiclass="x" testclass="LoopController" testname="Inner Forever By Property"><stringProp name="LoopController.loops">${__P(inner,-1)}</stringProp></LoopController>
+<hashTree>
+<HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /inner"><stringProp name="HTTPSampler.path">/inner</stringProp><stringProp name="HTTPSampler.method">GET</stringProp><boolProp name="HTTPSampler.follow_redirects">true</boolProp></HTTPSamplerProxy>
+<hashTree></hashTree>
+</hashTree>
+<LoopController guiclass="x" testclass="LoopController" testname="Pages By Property"><stringProp name="LoopController.loops">${__P(pages,2)}</stringProp></LoopController>
+<hashTree>
+<HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /page"><stringProp name="HTTPSampler.path">/page</stringProp><stringProp name="HTTPSampler.method">GET</stringProp><boolProp name="HTTPSampler.follow_redirects">true</boolProp></HTTPSamplerProxy>
+<hashTree></hashTree>
+</hashTree>
+</hashTree>
+<ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Edge Values"><stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+<elementProp name="ThreadGroup.main_controller" elementType="LoopController" testclass="LoopController"><stringProp name="LoopController.loops">1</stringProp></elementProp>
+<stringProp name="ThreadGroup.num_threads">1</stringProp><stringProp name="ThreadGroup.ramp_time">0</stringProp><boolProp name="ThreadGroup.scheduler">false</boolProp><stringProp name="ThreadGroup.duration"></stringProp></ThreadGroup>
+<hashTree>
+<CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Backslash Delimited"><stringProp name="filename">odd.csv</stringProp><stringProp name="variableNames">a\b</stringProp><stringProp name="delimiter">\</stringProp><boolProp name="ignoreFirstLine">true</boolProp></CSVDataSet>
+<hashTree/>
+<ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Pacing"><stringProp name="ConstantTimer.delay">1000</stringProp></ConstantTimer>
+<hashTree/>
+<HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /edges"><stringProp name="HTTPSampler.path">/edges/${__RandomString(08,abc)}/${__time(/08,)}</stringProp><stringProp name="HTTPSampler.method">GET</stringProp><boolProp name="HTTPSampler.follow_redirects">true</boolProp></HTTPSamplerProxy>
+<hashTree>
+<AuthManager guiclass="TestBeanGUI" testclass="AuthManager" testname="Basic Auth Under Sampler"></AuthManager>
+<hashTree/>
+<CounterConfig guiclass="TestBeanGUI" testclass="CounterConfig" testname="Counter Under Sampler"><stringProp name="CounterConfig.name">seq</stringProp></CounterConfig>
+<hashTree/>
+<HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Disabled Under Sampler" enabled="false"><collectionProp name="HeaderManager.headers"/></HeaderManager>
+<hashTree/>
+<RegexExtractor guiclass="TestBeanGUI" testclass="RegexExtractor" testname="EL Default"><stringProp name="RegexExtractor.refname">token</stringProp><stringProp name="RegexExtractor.regex">token=&quot;(\w+)&quot;</stringProp><stringProp name="RegexExtractor.template">$1$</stringProp><stringProp name="RegexExtractor.default">${fallbackToken}</stringProp><stringProp name="RegexExtractor.match_number">1</stringProp></RegexExtractor>
+<hashTree/>
+<RegexExtractor guiclass="TestBeanGUI" testclass="RegexExtractor" testname="Literal Hash Default"><stringProp name="RegexExtractor.refname">marker</stringProp><stringProp name="RegexExtractor.regex">marker=&quot;(\w+)&quot;</stringProp><stringProp name="RegexExtractor.template">$1$</stringProp><stringProp name="RegexExtractor.default">#{not-el}</stringProp><stringProp name="RegexExtractor.match_number">1</stringProp></RegexExtractor>
+<hashTree/>
+<RegexExtractor guiclass="TestBeanGUI" testclass="RegexExtractor" testname="Huge Match Number"><stringProp name="RegexExtractor.refname">huge</stringProp><stringProp name="RegexExtractor.regex">(x)</stringProp><stringProp name="RegexExtractor.template">$1$</stringProp><stringProp name="RegexExtractor.default">none</stringProp><stringProp name="RegexExtractor.match_number">99999999999</stringProp></RegexExtractor>
+<hashTree/>
+<ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Huge Timer"><stringProp name="ConstantTimer.delay">3000000000</stringProp></ConstantTimer>
+<hashTree/>
+</hashTree>
+<DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug After Edges"></DebugSampler>
+<hashTree/>
+<ForeachController guiclass="x" testclass="ForeachController" testname="Leading Zero Index"><stringProp name="ForeachController.inputVal">item</stringProp><stringProp name="ForeachController.returnVal">it</stringProp><stringProp name="ForeachController.startIndex">08</stringProp><stringProp name="ForeachController.endIndex"></stringProp></ForeachController>
+<hashTree>
+<HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /item"><stringProp name="HTTPSampler.path">/item/${it}</stringProp><stringProp name="HTTPSampler.method">GET</stringProp><boolProp name="HTTPSampler.follow_redirects">true</boolProp></HTTPSamplerProxy>
+<hashTree></hashTree>
+</hashTree>
+<HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST /ideographic"><stringProp name="HTTPSampler.path">/ideographic</stringProp><stringProp name="HTTPSampler.method">POST</stringProp><boolProp name="HTTPSampler.follow_redirects">true</boolProp><boolProp name="HTTPSampler.postBodyRaw">true</boolProp><elementProp name="HTTPsampler.Arguments" elementType="Arguments"><collectionProp name="Arguments.arguments"><elementProp name="" elementType="HTTPArgument"><stringProp name="Argument.value">first line　
+second line </stringProp></elementProp></collectionProp></elementProp></HTTPSamplerProxy>
+<hashTree></hashTree>
+</hashTree>
+</hashTree>
+</hashTree>
+</jmeterTestPlan>
