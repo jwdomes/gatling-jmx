@@ -13,8 +13,9 @@ It is built off the enterprise network where it will run, so the real `.jmx` fil
 java -jar build/jmx2gatling.jar convert src/test/resources/fixtures --out /tmp/x --package demo --no-timestamp
 ```
 
-After regenerating goldens, read the diff of `src/test/resources/golden/` before accepting it (no git here:
-copy the folder aside first and `diff -r`).
+After regenerating goldens, review `git diff src/test/resources/golden/` before committing.
+
+Repo: https://github.com/jwdomes/gatling-jmx (public, branch `main`).
 
 ## Hard constraints (from the spec)
 
